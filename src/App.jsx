@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import './App.css'
 import LeftColumn from './components/LeftColumn'
 import RightColumn from './components/RightColumn'
-import ProductColumn from './components/product'
+import ProductColumn from './components/Product'
 
 
 

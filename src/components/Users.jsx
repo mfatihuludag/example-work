@@ -1,13 +1,13 @@
 import React, { useState } from 'react'
 
 const Users = () => {
-  const [create, setCreate] = useState({name:"", mail:"", year:"", password:""})
+  const [create, setCreate] = useState({name:"", mail:"",phone: "", year:"", password:""})
   const [users, setUsers] = useState([])
   const [isPasswordVisible, setIsPasswordVisible] = useState(false)
 
   function register() {
     setUsers([...users, create])
-    setCreate({name: "", mail: "", year: "", password: ""})
+    setCreate({name: "", mail: "",phone: "", year: "", password: ""})
   }
 
   return (
@@ -23,6 +23,14 @@ const Users = () => {
         onChange={(e) => setCreate({...create, mail: e.target.value})} 
       />
       <input 
+        placeholder='Telefon Numarası'
+        value={create.phone}
+        onChange={(e) =>{
+        const onlyNumbers = e.target.value.replace(/[^0-9+]/g, "");
+        
+          setCreate({...create, phone: onlyNumbers})} }
+      />
+      <input 
         placeholder='Yaş'
         value={create.year}
         onChange={(e) => setCreate({...create, year: e.target.value})} 
@@ -32,8 +40,11 @@ const Users = () => {
           type={isPasswordVisible ? 'text' : 'password'}
           placeholder='Şifre'
           value={create.password}
+          maxLength={8}
           onChange={(e) => setCreate({...create, password: e.target.value})} 
         />
+        {create.password.length > 0 && (
+        <p>{create.password.length}/8 karakter</p> )}
         {create.password.length > 0 && (
           <button type="button" onClick={() => setIsPasswordVisible(!isPasswordVisible)}>
             {isPasswordVisible ? '🙈' : '👁️'}

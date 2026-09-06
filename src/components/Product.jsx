@@ -6,6 +6,7 @@ const ProductColumn = ({sepetSayisi, setSepetSayisi, favoriSayisi, setFavoriSayi
  
 const [arama, setArama] = useState('')
 const [maxFiyat, setMaxFiyat] = useState('')
+const [siralama, setSiralama] = useState('none')
 const [loading, setLoading] = useState(true)
 const [products, setProducts] = useState ([])
 
@@ -25,9 +26,15 @@ const [products, setProducts] = useState ([])
     
 
 }, [])
+
 const filtrelenmisUrunler = products.filter(product => 
   product.title.toLowerCase().includes(arama.toLowerCase()) &&
-  (maxFiyat === '' || product.price <= maxFiyat))
+  (maxFiyat === '' || product.price <= Number(maxFiyat)))
+  const sirali = [...filtrelenmisUrunler].sort((a, b) => {
+  if (siralama === 'asc') return a.price - b.price
+  if (siralama === 'desc') return b.price - a.price
+  return 0
+})
   return (
      <div>
         <div className='header-bar'>
@@ -49,10 +56,16 @@ const filtrelenmisUrunler = products.filter(product =>
         type="number"
         placeholder="Fiyat"
         value={maxFiyat}
-        onChange={(e) => setMaxFiyat(Number(e.target.value))}
-      /> </div>
+        onChange={(e) => setMaxFiyat(e.target.value)}
+      />
+      <select value={siralama} onChange={(e) => setSiralama(e.target.value)}>
+    <option value="none">Sıralama yok</option>
+    <option value="asc">Fiyat: Düşükten Yükseğe</option>
+    <option value="desc">Fiyat: Yüksekten Düşüğe</option>
+      </select>
+       </div>
         <div className='product1'>
-      {filtrelenmisUrunler.map((product) => (
+      {sirali.map((product) => (
         <ProductCard
           key={product.id}
           title={product.title}

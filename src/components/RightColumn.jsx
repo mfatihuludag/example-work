@@ -20,15 +20,17 @@ return (
 }
 const Rightcolumn = () => {
  const [newComment, setnewComment] = useState("")
+ const [newRating, setNewRating] = useState(1)
  const [comments, setComments] = useState([
-"Lorem ipsum dolor sit, amet consectetur adipisicing elit. Aperiam, quibusdam!",
-"Lorem ipsum dolor sit, amet consectetur adipisicing elit. Aperiam, quibusdam!",
-"Lorem ipsum dolor sit, amet consectetur adipisicing elit. Aperiam, quibusdam!"
+{text: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Aperiam, quibusdam!", rating: 5 },
+  { text: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Aperiam, quibusdam!", rating: 3 },
+  { text: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Aperiam, quibusdam!", rating: 4 }
  ])
  const inputRef = useRef(null)
 function yorumEkle() {
-   setComments([ newComment, ...comments])
+   setComments([{text: newComment, rating: newRating}, ...comments])
    setnewComment("")
+   setNewRating(1)
  }
 useEffect(() => {                      
     inputRef.current.focus()
@@ -39,10 +41,14 @@ useEffect(() => {
 <CurrencyRate />
 <h3>Yorumlar ({comments.length})</h3>
 <ul>
-        {comments.map((eleman, index) =>(<li key={index}>{eleman}</li>) )}
+        {comments.map((eleman, index) =>(<li key={index}>{eleman.text} — ⭐{eleman.rating}</li>) )}
         </ul>
       <input ref={inputRef} value={newComment} onChange={(e) => setnewComment(e.target.value)}/> 
-      
+      <input type="number"
+      min="1"
+      max="5"
+      value={newRating}
+      onChange={(e) => setNewRating(Number(e.target.value))} />
 
 <button onClick={yorumEkle}>Yorum Ekle</button>
 <Timer/>
